@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34024.191
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeroAndDragon_23_en", "HeroAndDragon_23_en\HeroAndDragon_23_en.csproj", "{26A0592E-71B1-4EDB-8966-A8B11086771C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeroAndDragon_NetStandard", "HeroAndDragon_NetStandard\HeroAndDragon_NetStandard.csproj", "{D65744A9-06F0-4447-9066-30688EEDA072}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{26A0592E-71B1-4EDB-8966-A8B11086771C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26A0592E-71B1-4EDB-8966-A8B11086771C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26A0592E-71B1-4EDB-8966-A8B11086771C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26A0592E-71B1-4EDB-8966-A8B11086771C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D65744A9-06F0-4447-9066-30688EEDA072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D65744A9-06F0-4447-9066-30688EEDA072}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D65744A9-06F0-4447-9066-30688EEDA072}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D65744A9-06F0-4447-9066-30688EEDA072}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D1F04EAB-3130-4F9B-B012-FFB036ADCA09}
+	EndGlobalSection
+EndGlobal
