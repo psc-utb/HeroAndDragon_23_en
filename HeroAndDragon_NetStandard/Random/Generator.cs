@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace hrdina_a_drak.Nahoda
+namespace HeroAndDragon_NetStandard.Random
 {
-    public class Generator : Random
+    public class Generator : System.Random
     {
-        private static Generator instance;
+        private static Generator? instance;
         public static Generator Instance
         {
             get

@@ -1,5 +1,5 @@
-﻿using hrdina_a_drak.Postavy;
-using hrdina_a_drak.Veci;
+﻿using HeroAndDragon_NetStandard.Characters;
+using HeroAndDragon_NetStandard.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,62 +10,47 @@ namespace hrdina_a_drak
     {
         static void Main(string[] args)
         {
-            //vybava
-            Mec mec1 = new Mec("Stříbrný meč", 2.5, 175);
-            Mec mec2 = new Mec("Daedrický meč", 4, 150);
-            Stit stit2 = new Stit("Elfský štít", 2.5, 150);
+            //equipment
+            Sword sword1 = new Sword("Silver sword", 2.5, 175);
+            Sword sword2 = new Sword("Daedric sword", 4, 150);
+            Shield shield = new Shield("Elfish shield", 2.5, 150);
 
 
-            //Postava postava = new Postava("", 545, 484, 48);
-            //hrdinove a draci
-            Hrdina hrdina = new Hrdina("Geralt", 500, 175, 50);
-            Drak drak = new Drak("Alduin", 350, 100, 40);
-            Drak drak2 = new Drak("Šmak", 450, 75, 25);
-            Hrdina hrdina2 = new Hrdina("Dovahkiin", 150, 75, 35, mec1);
-            //Vlk vlk = new Vlk("Vlk", 50);
+            //heroes and dragons
+            Hero hero = new Hero("Geralt", 500, 175, 50);
+            Dragon dragon = new Dragon("Alduin", 350, 100, 40);
+            Dragon dragon2 = new Dragon("Smaug", 450, 75, 25);
+            Hero hero2 = new Hero("Dovahkiin", 150, 75, 35, sword1);
 
 
-            List<Postava> postavy = new List<Postava>();
-            postavy.Add(hrdina);
-            postavy.Add(drak);
-            postavy.Add(drak2);
-            postavy.Add(hrdina2);
+            //list of characters
+            List<Character> characters = new List<Character>();
+            characters.Add(hero);
+            characters.Add(dragon);
+            characters.Add(dragon2);
+            characters.Add(hero2);
 
-            postavy.Sort();
-            Console.WriteLine(String.Join(Environment.NewLine, postavy));
-            Console.WriteLine(Environment.NewLine + Environment.NewLine);
-
-            double prumernaSila = postavy.Average(pos => pos.VypocitejSilu());
-            Console.WriteLine($"Průměrná síla postav: {prumernaSila}");
-
-            double nejmensiSila = postavy.Min(pos => pos.VypocitejSilu());
-            Console.WriteLine($"Nejmenší síla postavy je: {nejmensiSila}");
-            Postava nejslabsiPostava = postavy.Find(postava => postava.VypocitejSilu() == nejmensiSila);
-            Console.WriteLine($"Nejslabší postava je: {nejslabsiPostava.ToString()}");
-
-            List<Postava> silnePostavy = postavy.FindAll(postava => postava.VypocitejSilu() > prumernaSila);
-            Console.WriteLine("Silné postavy (postavy se silou větší než průměr):");
-            Console.WriteLine(String.Join(Environment.NewLine, silnePostavy));
-
-
+            characters.Sort();
+            Console.WriteLine(String.Join(Environment.NewLine, characters));
             Console.WriteLine(Environment.NewLine + Environment.NewLine);
 
 
-            postavy.ForEach(postava => postava.DosloKUtoku += VypisInformaciOUtoku);
+            //attack events attached
+            characters.ForEach(character => character.AttackPerformed += WriteAttackData);
 
 
-            for (int i = 0; JeMozneVybratOponenta(postavy); ++i)
+            for (int i = 0; OpponentCanBeChosen(characters); ++i)
             {
-                Console.WriteLine("Kolo č. " + i);
+                Console.WriteLine("Fight no. " + i);
 
-                for (int j = 0; j < postavy.Count; ++j)
+                for (int j = 0; j < characters.Count; ++j)
                 {
-                    Postava utocnik = postavy[j];
-                    if (utocnik.JeZiva())
+                    Character attacker = characters[j];
+                    if (attacker.IsAlive())
                     {
-                        Postava oponent = utocnik.VyberOponenta(postavy);
-                        if (oponent != null)
-                            utocnik.Utok(oponent);
+                        Character? opponent = attacker.OpponentSelection(characters);
+                        if (opponent != null)
+                            attacker.Attack(opponent);
                         else
                             continue;
 
@@ -74,44 +59,29 @@ namespace hrdina_a_drak
                 }
             }
 
-            Console.WriteLine("Vítězové:");
-            foreach (var pos in postavy)
+            Console.WriteLine("Winners:");
+            foreach (var character in characters)
             {
-                if (pos.JeZiva())
+                if (character.IsAlive())
                 {
-                    Console.WriteLine(pos.ToString());
+                    Console.WriteLine(character.ToString());
                 }
             }
-            Console.WriteLine("Poražení:");
-            foreach (var pos in postavy)
+            Console.WriteLine("Loosers:");
+            foreach (var character in characters)
             {
-                if (!pos.JeZiva())
+                if (!character.IsAlive())
                 {
-                    Console.WriteLine(pos.ToString());
+                    Console.WriteLine(character.ToString());
                 }
             }
-
-            /*
-            if (PocetZivychHrdinu(postavy) > 0)
-            {
-                Console.WriteLine("hrdinové vyhráli");
-            }
-            else if (PocetZivychDraku(postavy) > 0)
-            {
-                Console.WriteLine("draci vyhráli");
-            }
-            else
-            {
-                Console.WriteLine("Nikdo nevyhrál");
-            }*/
-
         }
 
-        public static bool JeMozneVybratOponenta(List<Postava> postavy)
+        public static bool OpponentCanBeChosen(List<Character> characters)
         {
-            foreach (Postava postava in postavy)
+            foreach (Character character in characters)
             {
-                if (postava.JeZiva() && postava.ExistujeOponent(postavy))
+                if (character.IsAlive() && character.OpponentExists(characters))
                 {
                     return true;
                 }
@@ -119,37 +89,11 @@ namespace hrdina_a_drak
             return false;
         }
 
-        /*
-        public static int PocetZivychHrdinu(List<Postava> postavy)
-        {
-            int pocetZivychHrdinu = 0;
-            foreach (Postava postava in postavy)
-            {
-                if (postava is Hrdina && postava.JeZiva())
-                {
-                    ++pocetZivychHrdinu;
-                }
-            }
-            return pocetZivychHrdinu;
-        }
 
-        public static int PocetZivychDraku(List<Postava> postavy)
+        public static void WriteAttackData(Character attacker, Character opponent, int damage, int defence)
         {
-            int pocetZivychHrdinu = 0;
-            foreach (Postava postava in postavy)
-            {
-                if (postava is Drak && postava.JeZiva())
-                {
-                    ++pocetZivychHrdinu;
-                }
-            }
-            return pocetZivychHrdinu;
-        }*/
-
-        public static void VypisInformaciOUtoku(Postava utocnik, Postava oponent, int poskozeni, int obrana)
-        {
-            Console.WriteLine($"Utok {utocnik.Jmeno} v hodnotě: " + poskozeni);
-            Console.WriteLine($"Oponentovi jménem {oponent.Jmeno} zbývá zdraví o hodnotě: " + oponent.Zdravi);
+            Console.WriteLine($"Attacker {attacker.Name} gives damage: " + damage);
+            Console.WriteLine($"Opponent {opponent.Name} has health: " + opponent.Health);
         }
     }
 }
