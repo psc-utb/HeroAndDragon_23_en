@@ -9,7 +9,19 @@ namespace HeroAndDragon_NetStandard.Characters
     public abstract class Character : Object, IComparable<Character>
     {
         public string Name { get; set; }
-        public int Health { get; set; }
+        private int health;
+        public int Health
+        {
+            get
+            {
+                return health;
+            }
+            set
+            {
+                HealthChanged?.Invoke(health, value);
+                health = value;
+            }
+        }
         public int MaxHealth { get; set; }
         public int MaxDamage { get; set; }
         public int MaxDefence { get; set; }
@@ -18,6 +30,7 @@ namespace HeroAndDragon_NetStandard.Characters
 
         public event Action<Character, Character, int, int>? AttackPerformed;
         public event Action<Character, int>? DefencePerformed;
+        public event Action<int, int>? HealthChanged;
 
         public Character(string name, int health, int maxDamage, int maxDefence)
         {
