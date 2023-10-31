@@ -18,8 +18,9 @@ namespace HeroAndDragon_NetStandard.Characters
             }
             set
             {
-                HealthChanged?.Invoke(health, value);
+                var healthOld = health;
                 health = value;
+                HealthChanged?.Invoke(healthOld, value);
             }
         }
         public int MaxHealth { get; set; }
